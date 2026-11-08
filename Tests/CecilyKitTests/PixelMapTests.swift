@@ -16,7 +16,7 @@ struct PixelMapTests {
     }
 
     @Test func aBrandIsNamedAfterCecily() {
-        let brand = AppBrand(name: "Cards", icon: PixelMap(rows: [], colours: [:]), tagline: "Always square with the bank.")
+        let brand = AppBrand(name: "Cards", tagline: "Always square with the bank.")
         #expect(brand.fullName == "Cecily Cards")
     }
 }

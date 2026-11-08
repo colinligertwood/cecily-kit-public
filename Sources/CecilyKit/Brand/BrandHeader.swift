@@ -4,10 +4,10 @@ import SwiftUI
     import AppKit
 #endif
 
-/// The brand's header, as the About window and the welcome screen show it: the app icon's drawing
-/// with no tile, then CECILY spaced out with its rust square, and the app's name. On the Mac, CECILY
-/// and the name are in Silom; on iPhone and iPad, CECILY is the brand's pixel wordmark and the
-/// name is in the system font. `details` go under the name, beside the drawing.
+/// The brand's header, as the About window and the welcome screen show it: the app's icon, then
+/// CECILY spaced out with its rust square, and the app's name. On the Mac, CECILY and the name are
+/// in Silom; on iPhone and iPad, CECILY is the brand's pixel wordmark and the name is in the
+/// system font. `details` go under the name, beside the icon.
 public struct BrandHeader<Details: View>: View {
     let brand: AppBrand
     /// A line just under the name, such as the version.
@@ -26,8 +26,7 @@ public struct BrandHeader<Details: View>: View {
 
     public var body: some View {
         HStack(alignment: .top, spacing: 24) {
-            PixelArt(map: brand.icon)
-                .frame(width: 96, height: 96)
+            AppIconImage()
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 6) {
@@ -66,6 +65,26 @@ public struct BrandHeader<Details: View>: View {
                     .opacity(0.72)
                 BrandMark(isDark: isDark, side: BrandType.cecilyCapitals, lead: BrandType.cecilyCapitals * 0.5)
             }
+        #endif
+    }
+}
+
+/// The app's icon, 96 points square, as the system draws it: on the Mac the app's own icon, whose
+/// tile is drawn inside a margin, so it's drawn larger, with the margin outside the 96 points; on
+/// iPhone and iPad the image named BrandIcon in the app's assets.
+struct AppIconImage: View {
+    var body: some View {
+        #if os(macOS)
+            Image(nsImage: NSApplication.shared.applicationIconImage)
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 120, height: 120)
+                .padding(-12)
+        #else
+            Image("BrandIcon")
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 96, height: 96)
         #endif
     }
 }
